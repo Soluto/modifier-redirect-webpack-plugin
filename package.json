@@ -1,0 +1,22 @@
+{
+  "name": "modifier-redirect-webpack-plugin",
+  "version": "0.0.1",
+  "description": "A plugin for webpack that redirects requires to the same resource but with a modifier, if it exists.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Soluto/modifier-redirect-webpack-plugin"
+  },
+  "keywords": [
+    "webpack"
+  ],
+  "author": "Soluto",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Soluto/modifier-redirect-webpack-plugin/issues"
+  },
+  "homepage": "https://github.com/Soluto/modifier-redirect-webpack-plugin"
+}
