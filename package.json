@@ -18,5 +18,8 @@
   "bugs": {
     "url": "https://github.com/Soluto/modifier-redirect-webpack-plugin/issues"
   },
-  "homepage": "https://github.com/Soluto/modifier-redirect-webpack-plugin"
+  "homepage": "https://github.com/Soluto/modifier-redirect-webpack-plugin",
+  "dependencies": {
+    "path": "^0.11.14"
+  }
 }
