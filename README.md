@@ -34,7 +34,7 @@ Assuming we have the following file structure in the project:
 
 And in the `main.js`: 
 
-    var template = require('templates/myComponent.html');
+    var template = require('./templates/myComponent.html');
     
     document.findElementsByName("body")[0].append(template);
     
@@ -50,4 +50,8 @@ then in the `webpack.config.js` we can use it like so:
        new ModifierRedirectPlugin(VARIATION)
      ]
 
-Now, if you change VARIATION to different values, the bundle will take the matching file or `myComponent.html` as a fallback
+This will make the `require('templates/myComponent.html')` in `main.js` return the content of `myComponent-customer1.html`.
+ 
+If you change `VARIATION` to `customer2` it will return `myComponent-customer2.html`
+
+And if you change `VARIATION` to `noSuchFile` it will return `myComponent.html`
