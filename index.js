@@ -1,33 +1,38 @@
 var path = require("path");
-var fs = require('fs');
 
-function ModifierRedirectPlugin(modifier) {
+function ModifierRedirectResolver(modifier) {
     this.modifier = modifier;
 }
 
-ModifierRedirectPlugin.prototype.apply = function(compiler) {
+ModifierRedirectResolver.prototype.apply = function(resolver) {
     var modifier = this.modifier;
 
     if (!modifier)
         return;
 
-    var tryToModify = function (result, callback) {
-        if (shouldTryToModify(result)) {
-            var modifiedResource = getResourceWithModifier(result.request, modifier);
+    var internalResolver = resolver.resolve;
 
-            if (fs.existsSync(modifiedResource)) {
-                result.request = modifiedResource;
-            }
+    resolver.resolve = function resolve(context, request, callback) {
+
+        var modifiedRequest = request;
+
+        if (shouldTryToModify({context: context})) {
+
+            modifiedRequest = getResourceWithModifier(request, modifier);
+
+            internalResolver.call(resolver, context, modifiedRequest, function(err, result) {
+                if (!err) {
+                    callback(err, result);
+                }
+                else {
+                    internalResolver.call(resolver, context, request, callback);
+                }
+            });
         }
-
-        return callback(null, result);
+        else {
+            internalResolver.call(resolver, context, request, callback);
+        }
     };
-
-    // Attach the behavior to the resolve hooks in webpack
-    compiler.plugin("normal-module-factory", function (nmf) {
-        nmf.plugin("before-resolve", tryToModify);
-        nmf.plugin("after-resolve", tryToModify);
-    });
 };
 
 function shouldTryToModify(result) {
@@ -41,4 +46,4 @@ function getResourceWithModifier(resource, modifier) {
     return fileWithoutExt + "-" + modifier + path.extname(resource);
 }
 
-module.exports = ModifierRedirectPlugin;
+module.exports = ModifierRedirectResolver;
